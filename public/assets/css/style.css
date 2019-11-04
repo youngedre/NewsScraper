@@ -1,0 +1,10 @@
+.jumbotron {
+    background-image: url("../images/backgroundImg.jpg");
+    background-size: cover;
+    height: 300px;
+    font-size: 50px;
+  }
+
+  #save {
+      float: right;
+  }
