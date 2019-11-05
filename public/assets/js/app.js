@@ -1,21 +1,21 @@
 $(document).ready(function() {
 
-    function saveArticle () {
-
-        var saveArticle = $(this).attr("data-_id");
-        
-        $(this)
-            .parents(".card")
-            .remove();
-
-        $.ajax({
-            method: "PUT",
-            url: `/api/save/${saveArticle}`,
-        }).then(function(data) {
-            if(data.saved) {
-                loadPage();
-            }
-        });
-    }
-  $(document).on("click", "#save", saveArticle());
+    $('#save').on('click', () => {
+         saveTitle = $(this).attr("data-title")
+         saveLink = $(this).attr("data-link")
+         saveSnip = $(this).attr("data-snip")
+          
+            $.ajax({
+              method: "POST",
+              url: "/saved",
+              data: {
+                title: saveTitle,
+                link: saveLink,
+                snip: saveSnip
+              }
+            })
+            .then(data => console.log("Saved: ", data));
+            location.reload()
+          
+      });
 });

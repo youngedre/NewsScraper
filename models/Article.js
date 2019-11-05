@@ -24,7 +24,7 @@ var ArticleSchema = new Schema({
     }, 
     isSaved: {
         type: Boolean,
-        default: false
+        default: true
     }
 
 });
