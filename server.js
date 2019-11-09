@@ -15,10 +15,20 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Mongo DB connection
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://youngedre:abc123@ds141178.mlab.com:41178/heroku_b8794x71"
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscraper"
+// "mongodb://youngedre:abc123@ds141178.mlab.com:41178/heroku_b8794x71"
 
 mongoose.connect(MONGODB_URI);
 
+app.get("/", (req, res) => {
+    db.Article.find({isSaved: false})
+    .then((data) => {
+        
+        res.render("index", {article: data});
+    })
+    
+
+});
 app.get("/scrape", (req, res) => {
     var results = {};
     axios.get("https://www.nytimes.com/").then((response) => {
@@ -31,42 +41,25 @@ app.get("/scrape", (req, res) => {
             results.summary = $(element).find("li").text() || $(element).find("p").text();
             db.Article.create(results)
             .then((dbArticles) => {
-                console.log(dbArticles);
-                
+                console.log("dbArticles");
+                res.redirect("/")
             })
             .catch((err) => {
                 console.log(err);
             });
         });
-        console.log(results.summary)
+        
 
-        console.log(dbArticles);
     });
-     db.Article.find({})
-    .then((data) => {
-        
-        res.render("index", {article: data});
-        console.log(data)
-    })
 });
 
-app.get("/", (req, res) => {
-    db.Article.find({})
-    .then((data) => {
-        
-        res.render("index", {article: data});
-        console.log(data)
-    })
-    
-
-});
 
 
 app.get("/all", (req, res) => {
     db.Article.find({})
     .then((data)=>{
         res.render("index", {article: data})
-        console.log(data)
+        // console.log(data)
     })
     .catch((err)=>{
         console.log(err)
@@ -74,9 +67,10 @@ app.get("/all", (req, res) => {
 });
 
 app.get("/saved", (req, res) => {
-    db.Article.find({isSaved})
+    console.log("save")
+    db.Article.find({isSaved: true})
     .then((data)=>{
-        res.render("index", {article: data})
+        res.render("savedIndex", {article: data})
         console.log(data)
     })
     .catch((err)=>{
@@ -84,6 +78,30 @@ app.get("/saved", (req, res) => {
     })
 });
 
+app.post("/save", (req, res) => {
+    console.log(req.body)
+    var query = {_id: req.body.id}
+    db.Article.update(query, {isSaved: true}).then((dbArticles) => {
+        console.log(dbArticles);
+        res.redirect("/")
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+
+})
+
+app.post("/remove", (req, res) => {
+    console.log(req.body)
+    var query = {_id: req.body.id}
+    db.Article.update(query, {isSaved: false}).then((dbArticles) => {
+        console.log(dbArticles);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+
+})
 app.get("/clear", (req, res) => {
     db.Article.collection.drop()
     .then(()=>{

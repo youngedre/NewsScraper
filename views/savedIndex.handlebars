@@ -1,17 +1,15 @@
 <div class="container">
   <ul class="text-center">
     {{#each article}}
-      {{#unless article.isSaved}}
         <li class="card row">
           <div class="about">
             <h2 class="card-header bg-primary">{{title}}</h2>
-            <button type="button" id="save" data-id="{{this.id}}" class="btn btn-primary">Save</button>
+            <button type="button" id="remove" data-id="{{this.id}}" class="btn btn-primary">Remove</button>
             <div class="card-body">
               <p>{{summary}}</p>
               <a href="{{link}}">{{link}}</a>
             </div>
         </li>
-      {{/unless}}
     {{/each}}
   </ul>
  <script src="/assets/js/app.js"></script>

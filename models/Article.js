@@ -15,8 +15,7 @@ var ArticleSchema = new Schema({
     },
     summary: {
         type: String,
-        required: true,
-        unique: true
+        required: false
     },
     notes: {
         type:Schema.Types.ObjectId,
@@ -24,7 +23,7 @@ var ArticleSchema = new Schema({
     }, 
     isSaved: {
         type: Boolean,
-        default: true
+        default: false
     }
 
 });
