@@ -4,7 +4,7 @@ var cheerio = require("cheerio");
 var mongoose = require("mongoose");
 var db = require("./models/index");
 var app = express();
-var PORT = 3003;
+var PORT = process.env.PORT || 3003;
 var expressHandlebars = require("express-handlebars");
 app.engine("handlebars", expressHandlebars({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
