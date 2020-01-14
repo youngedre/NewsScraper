@@ -7,3 +7,5 @@ It displays the title, summary and link to the article within a card. Functional
 * Handlebars
 * Mongoose/Mongo
 * Express
+
+view news scraper here: https://glacial-scrubland-19024.herokuapp.com/
